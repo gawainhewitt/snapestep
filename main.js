@@ -237,7 +237,7 @@ function welcomeScreen() {
   textAlign(CENTER, CENTER);
   text("SnapeStep", width/2, height/10 * 2);
   textSize(cnvDimension/20);
-  text( "Made with love for my new friends", width/10, height/10, (width/10) * 8, (height/10) * 8);
+  text( "I made this for my new friends", width/10, height/10, (width/10) * 8, (height/10) * 8);
   text( "Touch screen or click mouse to start", width/2, height/10 * 8);
 }
 
