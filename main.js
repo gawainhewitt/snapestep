@@ -610,10 +610,10 @@ let index = 0;
 
     const sampler = new Tone.Sampler({
       urls: {
-        A3: "violinStep1.flac",
-        G3: "violinStep2.flac",
-        E3: "violinStep3.flac",
-        D3: "violinLoop1.flac"
+        A3: "waffyStep1.flac",
+        G3: "waffyStep2.flac",
+        E3: "waffyStep3.flac",
+        D3: "waffyLoop1.flac"
       },
       baseUrl: "/sounds/",
     // 	onload: () => {
