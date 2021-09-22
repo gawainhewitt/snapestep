@@ -608,19 +608,19 @@ function buttonPressed(i) {
 let index = 0;
     notes = ['a3', 'g3', 'e3', 'd3', 'c3'];
 
-    const sampler = new Tone.Sampler({
-      urls: {
-        A3: "snapeStep1.flac",
-        G3: "snapeStep2.flac",
-        E3: "snapeStep3.flac",
-        D3: "snapeLoop1.flac"
-      },
-      baseUrl: "/sounds/",
-    // 	onload: () => {
-    //     // hideLoadScreen();
-    //   }
-      volume: theVolume
-    }).toDestination();
+    // const sampler = new Tone.Sampler({
+    //   urls: {
+    //     A3: "snapeStep1.flac",
+    //     G3: "snapeStep2.flac",
+    //     E3: "snapeStep3.flac",
+    //     D3: "snapeLoop1.flac"
+    //   },
+    //   baseUrl: "/sounds/",
+    // // 	onload: () => {
+    // //     // hideLoadScreen();
+    // //   }
+    //   volume: theVolume
+    // }).toDestination();
 
 function repeat(time) {
   let _step = index % seqSteps;
