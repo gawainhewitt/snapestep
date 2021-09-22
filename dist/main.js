@@ -17,7 +17,7 @@ let numberOfloopers = looperSteps * looperRows;// automatically generate circula
 let looperButtonPositions = []; // position to draw the buttons
 
 let seqSteps = 8;
-let seqRows = 5;
+let seqRows = 8;
 let seqRowIncrement; // defined in setup
 let seqRowPosition; // defined in setup
 
@@ -61,17 +61,17 @@ let seqWidth;
 let seqHeight;
 let looper2width;
 
-let one = 'waffyLoop1';
-let two = 'waffyLoop2';
-let three = 'waffyLoop3';
-let four = 'waffyLoop4';
-let five = 'waffyLoop5';
-let six = 'waffyLoop6';
+let one = 'snapeLoop1';
+let two = 'snapeLoop2';
+let three = 'snapeLoop3';
+let four = 'snapeLoop4';
+let five = 'snapeLoop5';
+let six = 'snapeLoop6';
 
 let stepName = new Array;
 
 for(let i = 0; i < seqRows; i++){
-  stepName[i] = `waffyStep${i}`;
+  stepName[i] = `snapeStep${i}`;
 }
 
 const player1 = new Tone.Player().toDestination();
@@ -91,7 +91,7 @@ let playerArray = [player1, player2, player3, player4, player5, player6];
 
 let seqBuffers = new Array;
 
-let originalTempo = 100;
+let originalTempo = 20;
 Tone.Transport.bpm.value = originalTempo;
 Tone.Transport.loopEnd.value = "8m";
 console.log(`bpm ${Math.round(Tone.Transport.bpm.value)}`);
@@ -120,23 +120,23 @@ function preload() {
   seqStep2 = loadImage(`/images/triangleStep2.png`);
   grass = carpet;
   looper = loadImage(`/images/wigmorestage2.png`);
-  for(let i = 0; i < numberOfloopers; i++){
-    performerOff[i] = loadImage(`/images/violin.png`);
-    performerOn[i] = loadImage(`/images/violin.png`);
-  }
+  // for(let i = 0; i < numberOfloopers; i++){
+  //   performerOff[i] = loadImage(`/images/violin.png`);
+  //   performerOn[i] = loadImage(`/images/violin.png`);
+  // }
 
-  buffers = new Tone.ToneAudioBuffers({
-    urls: {
-      A1: `${one}.flac`,
-      A2: `${two}.flac`,
-      A3: `${three}.flac`,
-      A4: `${four}.flac`,
-      A5: `${five}.flac`,
-      A6: `${six}.flac`,
-    },
-    //onload:  () => welcomeScreen(), // initial screen for project - also allows an elegant place to put in the Tone.start() command.,
-    baseUrl: "/sounds/"
-  });
+  // buffers = new Tone.ToneAudioBuffers({
+  //   urls: {
+  //     A1: `${one}.flac`,
+  //     A2: `${two}.flac`,
+  //     A3: `${three}.flac`,
+  //     A4: `${four}.flac`,
+  //     A5: `${five}.flac`,
+  //     A6: `${six}.flac`,
+  //   },
+  //   //onload:  () => welcomeScreen(), // initial screen for project - also allows an elegant place to put in the Tone.start() command.,
+  //   baseUrl: "/sounds/"
+  // });
 
   for(let i = 0; i < seqRows; i++){
     seqBuffers[i] = new Tone.ToneAudioBuffer(`/sounds/${stepName[i]}.flac`)
@@ -181,7 +181,7 @@ function setup() {  // setup p5
   seqHeight = width/13;
   looper2width = width/6;
   seqRowIncrement = height/11; // how close are the rows to each other?
-  seqRowPosition = (height/9) * 5; // where is the sequencer positioned on the y axis?
+  seqRowPosition = (height/9) * 2; // where is the sequencer positioned on the y axis?
   speed_text_y =  height/10*9.5;
   bpmTextSize = width/8;
   speedTextSize = width/8;
@@ -235,9 +235,9 @@ function welcomeScreen() {
   background(150); // background is grey (remember 5 is maximum because of the setup of colorMode)
   textSize(cnvDimension/10);
   textAlign(CENTER, CENTER);
-  text("SnapeStep", width/2, height/10 * 2);
+  text("Snape Maltings", width/2, height/10 * 2);
   textSize(cnvDimension/20);
-  text( "Made with love for my new friends", width/10, height/10, (width/10) * 8, (height/10) * 8);
+  text( "Reed Marsh Sequencer", width/10, height/10, (width/10) * 8, (height/10) * 8);
   text( "Touch screen or click mouse to start", width/2, height/10 * 8);
 }
 
@@ -245,30 +245,30 @@ function createButtonPositions() {
 
   //looper button positions
 
-  let looperStepstart = looper_x - radius*2.3;
-  let looperStepIncrement = radius*2.3;
-  let looperStepDistance = looperStepstart;
-  let looperRowIncrement = radius*2.5;
-  let looperRowPosition = looper_y - radius/2;
+  // let looperStepstart = looper_x - radius*2.3;
+  // let looperStepIncrement = radius*2.3;
+  // let looperStepDistance = looperStepstart;
+  // let looperRowIncrement = radius*2.5;
+  // let looperRowPosition = looper_y - radius/2;
 
-  for(let i = 0; i < looperRows; i++){
-    for(let i = 0; i < looperSteps; i++){
-      looperButtonPositions.push({
-        x: looperStepDistance,
-        y: looperRowPosition,
-        state: 0,
-        colour: buttonOffColour
-      });
-      looperStepDistance = looperStepDistance + looperStepIncrement;
-    }
-    looperStepDistance = looperStepstart;
-    looperRowPosition = looperRowPosition + looperRowIncrement;
-  }
+  // for(let i = 0; i < looperRows; i++){
+  //   for(let i = 0; i < looperSteps; i++){
+  //     looperButtonPositions.push({
+  //       x: looperStepDistance,
+  //       y: looperRowPosition,
+  //       state: 0,
+  //       colour: buttonOffColour
+  //     });
+  //     looperStepDistance = looperStepDistance + looperStepIncrement;
+  //   }
+  //   looperStepDistance = looperStepstart;
+  //   looperRowPosition = looperRowPosition + looperRowIncrement;
+  // }
 
-  for(let i = 0; i < looperButtonPositions.length; i++){
-    synthState.push(0); //create default state of the synth array
-    buttonColour[i] = buttonOffColour;
-  }
+  // for(let i = 0; i < looperButtonPositions.length; i++){
+  //   synthState.push(0); //create default state of the synth array
+  //   buttonColour[i] = buttonOffColour;
+  // }
 
   //next the positions of the seq sequencer buttons
 
@@ -317,10 +317,10 @@ function drawSynth(step) { // instead of using the draw function at 60 frames a 
     //image(looper, looper_x, looper_y + (seqHeight/1.5), looperwidth, looperheight); // place the looper image
     //image(grass, 0, grassPosition, width, (height/5)*2); // place the grass image
 
-    for (let i = 0; i < numberOfloopers; i++) { // draw the looper buttons on looper
-      fill(looperButtonPositions[i].colour);
-      ellipse(looperButtonPositions[i].x, looperButtonPositions[i].y, radius * 2);
-    }
+    // for (let i = 0; i < numberOfloopers; i++) { // draw the looper buttons on looper
+    //   fill(looperButtonPositions[i].colour);
+    //   ellipse(looperButtonPositions[i].x, looperButtonPositions[i].y, radius * 2);
+    // }
 
     // for (let i = 0; i < numberOfloopers; i++) { // draw the looper buttons on looper
     //   if(looperButtonPositions[i].colour === buttonOffColour){
@@ -384,78 +384,78 @@ function startAudio() {
   Tone.start(); // we need this to allow audio to start.
   soundOn = true;
   drawSynth();
-  player1.buffer = buffers.get("A1");
-  player1.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
-  player2.buffer = buffers.get("A2");
-  player2.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
-  player3.buffer = buffers.get("A3");
-  player3.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
-  player4.buffer = buffers.get("A4");
-  player4.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
-  player5.buffer = buffers.get("A5");
-  player5.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
-  player6.buffer = buffers.get("A6");
-  player6.set(
-    {
-      "mute": false,
-      "volume": -100,
-      "autostart": false,
-      "fadeIn": 0,
-      "fadeOut": 0,
-      "playbackRate": 1,
-      "reverse": false
-    }
-  );
+  // player1.buffer = buffers.get("A1");
+  // player1.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
+  // player2.buffer = buffers.get("A2");
+  // player2.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
+  // player3.buffer = buffers.get("A3");
+  // player3.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
+  // player4.buffer = buffers.get("A4");
+  // player4.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
+  // player5.buffer = buffers.get("A5");
+  // player5.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
+  // player6.buffer = buffers.get("A6");
+  // player6.set(
+  //   {
+  //     "mute": false,
+  //     "volume": -100,
+  //     "autostart": false,
+  //     "fadeIn": 0,
+  //     "fadeOut": 0,
+  //     "playbackRate": 1,
+  //     "reverse": false
+  //   }
+  // );
 
   for(let i = 0; i < seqRows; i++){
     seqPlayers[i].buffer = seqBuffers[i].get();
@@ -475,12 +475,12 @@ function startAudio() {
 
   Tone.Transport.start();
   Tone.Transport.scheduleRepeat(repeat, '8n'); // call our function 'repeat' every x time (8n or an 8th note in this case)
-  Tone.Transport.scheduleRepeat(play_ = () => {player1.start();}, '2m');
-  Tone.Transport.scheduleRepeat(play_ = () => {player2.start();}, '2m');
-  Tone.Transport.scheduleRepeat(play_ = () => {player3.start();}, '2m');
-  Tone.Transport.scheduleRepeat(play_ = () => {player4.start();}, '4m');
-  Tone.Transport.scheduleRepeat(play_ = () => {player5.start();}, '1m');
-  Tone.Transport.scheduleRepeat(play_ = () => {player6.start();}, '2m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player1.start();}, '2m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player2.start();}, '2m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player3.start();}, '2m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player4.start();}, '4m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player5.start();}, '1m');
+  // Tone.Transport.scheduleRepeat(play_ = () => {player6.start();}, '2m');
   retrieveSavedWork();
 }
 
@@ -496,12 +496,12 @@ function handleClick(e){
       }
     }else{
 
-      for (let i = 0; i < numberOfloopers; i++) {
-        let d = dist(mouseX, mouseY, looperButtonPositions[i].x, looperButtonPositions[i].y);
-        if (d < radius) {
-          buttonPressed(i);
-        }
-      }
+      // for (let i = 0; i < numberOfloopers; i++) {
+      //   let d = dist(mouseX, mouseY, looperButtonPositions[i].x, looperButtonPositions[i].y);
+      //   if (d < radius) {
+      //     buttonPressed(i);
+      //   }
+      // }
 
       for(let i = 0; i < seqRows; i++){
         for(let j = 0; j < seqSteps; j++){
@@ -514,7 +514,7 @@ function handleClick(e){
 
       if(isMouseInsideText(slower.text, slower.x, slower.y)){
         console.log("slower");
-        if(Tone.Transport.bpm.value > 35){
+        if(Tone.Transport.bpm.value > 20){
           Tone.Transport.bpm.value = Tone.Transport.bpm.value - 5;
         }
         setSpeed(Tone.Transport.bpm.value);
@@ -610,10 +610,10 @@ let index = 0;
 
     const sampler = new Tone.Sampler({
       urls: {
-        A3: "violinStep1.flac",
-        G3: "violinStep2.flac",
-        E3: "violinStep3.flac",
-        D3: "violinLoop1.flac"
+        A3: "snapeStep1.flac",
+        G3: "snapeStep2.flac",
+        E3: "snapeStep3.flac",
+        D3: "snapeLoop1.flac"
       },
       baseUrl: "/sounds/",
     // 	onload: () => {
