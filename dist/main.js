@@ -139,7 +139,7 @@ function preload() {
   // });
 
   for(let i = 0; i < seqRows; i++){
-    seqBuffers[i] = new Tone.ToneAudioBuffer(`/sounds/${stepName[i]}.flac`)
+    seqBuffers[i] = new Tone.ToneAudioBuffer(`/sounds/${stepName[i]}.mp3`)
   }
 
 }
