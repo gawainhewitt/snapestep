@@ -15,12 +15,10 @@ let seqRowIncrement; // defined in setup
 let seqRowPosition; // defined in setup
 let radius; // radius of the buttons for looper and save button
 
-let seqStuff = new Array ();
+let seqObject = {};
 for(let i = 0; i < seqRows; i++){
-    seqStuff[i] = new Array ();
+  seqObject[`row${i}`] = new Array ();
 }
-
-//let offsetT; // to store the difference between x and y readings once menus are taken into account
 
 let soundOn = false; // have we instigated Tone.start() yet? (needed to allow sound)
 
@@ -71,6 +69,8 @@ let saveText;
 
 let inp;
 
+let myJSON;
+
 function preload() {
   seqOn = loadImage(`/images/triangleOn.png`);
   seqOff = loadImage(`/images/triangleOff.png`);
@@ -100,8 +100,6 @@ function setup() {  // setup p5
   // *** add vanilla JS event listeners for touch which i want to use in place of the p5 ones as I believe that they are significantly faster
   let el = document.getElementById("p5parent");
   el.addEventListener("click", handleClick);
-
-  //offsetT = el.getBoundingClientRect(); // get the size and position of the p5parent div so i can use offset top to work out where touch and mouse actually need to be
 
   noStroke(); // no stroke on the drawings
 
@@ -134,10 +132,6 @@ function setup() {  // setup p5
     status: false
   });
 
-  // if (window.DeviceOrientationEvent) {      // if device orientation changes we recalculate the offsetT variable
-  //   window.addEventListener("deviceorientation", handleOrientationEvent);
-  // }
-
   welcomeScreen(); // initial screen for project - also allows an elegant place to put in the Tone.start() command.
                     // if animating put an if statement in the draw() function otherwise it will instantly overide it
   createButtonPositions(); // generate the default array info depending on number of buttons
@@ -149,11 +143,6 @@ function setup() {  // setup p5
   inp.size(cnvDimension/2);
   inp.hide();
 }
-
-// function handleOrientationEvent() {
-//   let el = document.getElementById("p5parent");
-//   offsetT = el.getBoundingClientRect(); // get the size and position of the p5parent div so i can use offset top to work out where touch and mouse actually need to be
-// }
 
 function welcomeScreen() {
   background(150); // background is grey (remember 5 is maximum because of the setup of colorMode)
@@ -171,11 +160,10 @@ function createButtonPositions() {
   let seqStepstart = width/(seqSteps*1.5);
   let seqStepIncrement = width/(seqSteps + (step*0.5));
   let seqStepDistance = seqStepstart;
-  let seqRowDistance = seqRowIncrement;
 
   for(let i = 0; i < seqRows; i++){
     for(let j = 0; j < seqSteps; j++){
-      seqStuff[i].push({
+      seqObject[`row${i}`].push({
         x: seqStepDistance,
         y: seqRowPosition,
         state: 0,
@@ -186,11 +174,10 @@ function createButtonPositions() {
     seqStepDistance = seqStepstart;
     seqRowPosition = seqRowPosition + seqRowIncrement;
   }
+
 }
 
 function drawSynth(step) { // instead of using the draw function at 60 frames a second we will call this function when something changes
-
-  //console.log(seqStuff);
 
   if(save.status){
     background(156, 156, 184);
@@ -210,13 +197,13 @@ function drawSynth(step) { // instead of using the draw function at 60 frames a 
 
     for(let i = 0; i < seqRows; i++){
       for(let j = 0; j < seqSteps; j++){
-        if((j === step) && (seqStuff[i][j].state === 0)){ // if this is the current step and the step is "off"
-          image(seqStep1, seqStuff[i][j].x, seqStuff[i][j].y, seqWidth, seqHeight); // then yellow seq for this step
-        }else if((j === step) && (seqStuff[i][j].state === 1)){ // if this is the current step and the step is "on"
-          image(seqStep2, seqStuff[i][j].x, seqStuff[i][j].y, seqWidth, seqHeight); // then purple seq for this step
+        if((j === step) && (seqObject[`row${i}`][j].state === 0)){ // if this is the current step and the step is "off"
+          image(seqStep1, seqObject[`row${i}`][j].x, seqObject[`row${i}`][j].y, seqWidth, seqHeight); // then yellow seq for this step
+        }else if((j === step) && (seqObject[`row${i}`][j].state === 1)){ // if this is the current step and the step is "on"
+          image(seqStep2, seqObject[`row${i}`][j].x, seqObject[`row${i}`][j].y, seqWidth, seqHeight); // then purple seq for this step
         }
         else{
-          image(seqStuff[i][j].image, seqStuff[i][j].x, seqStuff[i][j].y, seqWidth, seqHeight); // otherwise seq colour reflects step state
+          image(seqObject[`row${i}`][j].image, seqObject[`row${i}`][j].x, seqObject[`row${i}`][j].y, seqWidth, seqHeight); // otherwise seq colour reflects step state
         }
       }
     }
@@ -238,6 +225,8 @@ function drawSynth(step) { // instead of using the draw function at 60 frames a 
       text(`BPM ${Math.round(Tone.Transport.bpm.value)}`, width/2, (height/3)*2);
     }
   }
+  myJSON = Flatted.stringify(seqSaveSteps);
+  console.log(myJSON);
 }
 
 function copySave() {
@@ -253,6 +242,7 @@ function copySave() {
 
   /* Alert the copied text */
   //alert("Copied the text: " + copyText.value);
+
 }
 
 function startAudio() {
@@ -295,7 +285,7 @@ function handleClick(e){
     }else{
       for(let i = 0; i < seqRows; i++){
         for(let j = 0; j < seqSteps; j++){
-          let d = dist(mouseX, mouseY, seqStuff[i][j].x, seqStuff[i][j].y);
+          let d = dist(mouseX, mouseY, seqObject[`row${i}`][j].x, seqObject[`row${i}`][j].y);
           if (d < seqHeight/2) {
             seqPressed(i, j);
           }
@@ -355,17 +345,17 @@ function handleClick(e){
 
 function seqPressed(row, step) {
 
-  if(seqStuff[row][step].state === 0) { // if the synth is not playing that note at the moment
-    seqStuff[row][step].image = seqOn;
+  if(seqObject[`row${row}`][step].state === 0) { // if the synth is not playing that note at the moment
+    seqObject[`row${row}`][step].image = seqOn;
     drawSynth();
-    seqStuff[row][step].state = 1; // change the array to reflect that the note is playing
+    seqObject[`row${row}`][step].state = 1; // change the array to reflect that the note is playing
   }
   else { // if the synth is playing that note at the moment
-    seqStuff[row][step].image = seqOff;
+    seqObject[`row${row}`][step].image = seqOff;
     drawSynth();
-    seqStuff[row][step].state = 0; // change the array to reflect that the note is playing
+    seqObject[`row${row}`][step].state = 0; // change the array to reflect that the note is playing
   }
-  console.log(`row${row} step ${step} = ${seqStuff[row][step].state}`);
+  console.log(`row${row} step ${step} = ${seqObject[`row${row}`][step].state}`);
 
 
 }
@@ -382,7 +372,7 @@ function repeat(time) {
   let _step = index % seqSteps;
   drawSynth(_step)
   for(let i = 0; i < seqRows; i++) {
-    if(seqStuff[i][_step].state === 1) {
+    if(seqObject[`row${i}`][_step].state === 1) {
       seqPlayers[i].start();
     }
   }
@@ -406,14 +396,14 @@ function isMouseInsideText(text, textX, textY) {
 var url_ob = new URL(document.URL);
 
 
-let seqSaveSteps = new Array;
+let seqSaveSteps = {};
 for(let i = 0; i < seqRows; i++){
-  seqSaveSteps[i] = new Array;
+  seqSaveSteps[`row${i}`] = new Array ();
 }
 
 for(let i = 0; i < seqRows; i++){ // setup and initialise the array
   for(let j = 0; j < seqSteps; j++){
-    seqSaveSteps[i].push(0);
+    seqSaveSteps[`row${i}`].push(0);
   }
 }
 
@@ -421,13 +411,14 @@ for(let i = 0; i < seqRows; i++){ // setup and initialise the array
 function saveSeq() {
   for(let i = 0; i < seqRows; i++){
     for(let j = 0; j < seqSteps; j++){
-      seqSaveSteps[i][j] = seqStuff[i][j].state;
+      seqSaveSteps[`row${i}`][j] = seqObject[`row${i}`][j].state;
     }
+
   }
 
   let seqRowsArray = new Array;
   for(let i = 0; i < seqRows; i++){
-    seqRowsArray[i] = seqSaveSteps[i].join('');
+    seqRowsArray[i] = seqSaveSteps[`row${i}`].join('');
   }
   let seqHex = new Array;
   for(let i = 0; i < seqRows; i++){
